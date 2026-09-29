@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;800&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+ <title>Mi semana de estudio</title>
+ <script
+src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.2/Sortable.min.js"></script>
+ <style>
+    body { font-family: "Atkinson Hyperlegible", sans-serif; background: linear-gradient(135deg, #b9c8ff, #f1dfff, #ffd0a8); background-attachment: fixed; min-height: 100vh; box-sizing: border-box; color: #1f2a44; margin: 0; padding: 24px; }
+    .tablero { display: flex; gap: 16px; flex-wrap: wrap; align-items: flex-start;margin-top: 45px; justify-content: center; }
+    .columna { background: white; border-radius: 10px; padding: 12px; width: 220px; border-top: 5px solid #3a5bd9; transition: background 0.3s; }
+    .columna h3 { margin: 0 0 8px; font-size: 1rem; }
+
+    .lista { list-style: none; padding: 0; margin: 0; min-height: 80px; }
+    .lista li { font-family: "Atkinson Hyperlegible", sans-serif;background: #f5f7fb; border-left: 4px solid #3a5bd9; padding: 10px; margin-bottom: 6px; border-radius: 6px; cursor: default; transition: background 0.3s; }
+    .lista li:hover { background: #e3e9ff; }
+    .fantasma { opacity: 0.4; background: #c8e6c9; }
+    .elegida { box-shadow: 0 6px 14px rgba(0,0,0,0.3); }
+
+    .lista li { cursor: default; }
+    .asa { cursor: grab; color: #999; margin-right: 8px; }
+    .lista li.error { background: #e57373; color: white; }
+    .columna.sobrecargado { background: #fdecec; border-top-color: #d64545; }
+    .columna h3 { display: flex; justify-content: space-between; align-items: center; }
+    .total { font-size: 0.85rem; background: #e3e9ff; color: #3a5bd9; padding: 2px 8px; border-radius: 999px; }
+    .columna.sobrecargado .total { background: #d64545; color: white; }
+    .dia:empty::before { content: "Arrastra actividades aquí"; display: block; padding: 28px 8px; text-align: center; text-align: center; color: #9aa4b8; font-size: 0.9rem; }
+    #papelera:empty::before { content: "Suelta aquí para borrar"; display: block; padding: 28px 8px; text-align: center; color: #9aa4b8; font-size: 0.9rem;}
+    h1 { font-family: "Bricolage Grotesque", sans-serif; font-size: 3rem; font-weight: 800; color: #071c7abd; margin: 0 0 4px; text-align: center;} 
+    .columna h3 { font-family: "Bricolage Grotesque", sans-serif; }
+    .columna-banco { width: 460px; max-width: 100%; }
+    #banco { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 8px; }
+    #banco li { margin-bottom: 0; }
+
+    .lista li.hecha { text-decoration: line-through; opacity: 0.6; }
+    #nueva { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 14px; padding-top: 12px; border-top: 1px solid #e3e7ef; }
+    #nueva input { font: inherit; padding: 8px 10px; border: 1px solid #c3cad8; border-radius: 6px; background: #f5f7fb; }
+    #nueva input:focus { outline: 2px solid #3a5bd9; border-color: transparent; background: white; }
+    #nombre { flex: 1 1 100%; }
+    #horas { flex: 1; min-width: 0; }
+    #nueva button { font: inherit; font-weight: 700; background: #3a5bd9; color: white; border: none; border-radius: 6px; padding: 8px 14px; cursor: pointer; }
+    #nueva button:hover { background: #2a3f9e; }
+    .dia { min-height: 300px; }
+    #mensaje { width: fit-content; min-height: 1.4em; margin: 20px auto 0; padding: 8px 18px; background: white; color: #3a5bd9; font-weight: 700; border-radius: 999px; box-shadow: 0 4px 12px rgba(31, 42, 68, 0.15); }
+    #mensaje:empty { visibility: hidden; }
+    
+    
+
+
+ </style>
+</head>
+<body>
+    <h1>Mi semana de estudio</h1>
+    <p id="mensaje"></p>
+    <div class="tablero">
+        <div class="columna columna-banco">
+            <h3>Actividades</h3>
+            <ul class="lista" id="banco">
+                <li data-horas="1"><span class="asa">⠿</span> Revisar paginas asignadas en diseño de algoritmos(1 h)</li>
+                <li data-horas="2"><span class="asa">⠿</span> Terminar taller de frontend(2 h)</li>
+                <li data-horas="3"><span class="asa">⠿</span> Hacer lectura de procesos de invertigacion I (3 h)</li>
+                <li data-horas="2.5"><span class="asa">⠿</span> Adelantar taller de procesadores de lenguajes sobre GLC(2.5 h)</li>
+                <li data-horas="1"><span class="asa">⠿</span> Estudiar para sustentación de frontend (1 h)</li>
+                <li data-horas="4"><span class="asa">⠿</span> Terminar laboratorio de modelamiento y simulación (4 h)</li>
+                <li data-horas="2"><span class="asa">⠿</span> Terminar de escribir reglas de algrebra de boole(2 h)</li>
+
+            </ul>
+            </div>
+
+
+        <div class="columna">
+            <h3>Lunes <span class="total"></span></h3>
+            <ul class="lista dia" id="lunes">
+                <li class="fija" data-horas="2"><span class="asa">⠿</span> Clase de Redes LAN (2h)</li>
+            </ul>
+        </div>
+
+        <div class="columna">
+            <h3>Martes <span class="total"></span></h3>
+            <ul class="lista dia" id="martes"></ul>
+        </div>
+
+        <div class="columna">
+            <h3>Miercoles <span class="total"></span></h3>
+            <ul class="lista dia" id="miercoles"></ul>
+        </div>
+
+        <div class="columna">
+            <h3>Jueves <span class="total"></span></h3>
+            <ul class="lista dia" id="jueves"></ul>
+        </div>
+
+        <div class="columna">
+            <h3>Viernes <span class="total"></span></h3>
+            <ul class="lista dia" id="viernes"></ul>
+        </div>
+
+        <div class="columna">
+            <h3>Elimina y crea actividades</h3>
+            <ul class="lista" id="papelera" style="border: 2px dashed red;"></ul>
+            <form id="nueva">
+                <input type="text" id="nombre" placeholder="Nueva actividad" required>
+                <input type="number" id="horas" placeholder="Horas" min="0.5" step="0.5" required>
+                <button type="submit">Agregar</button>
+            </form>
+        </div>
+    </div>
+    <script>
+     
+        const listas = document.querySelectorAll(".dia");
+        listas.forEach((lista) => {
+            new Sortable(lista, {
+                group: {
+                    name: "semana",
+                    put: (destino) => destino.el.children.length < 5
+                },
+                animation: 200,
+                ghostClass: "fantasma",
+                chosenClass: "elegida",
+                handle: ".asa",
+                onEnd: (evt) => {
+                    mostrarMensaje(evt);
+                    actualizarHoras();
+                },
+
+                filter: ".fija",
+                onFilter: (evt) => {
+                    const tarjeta = evt.item;
+                    tarjeta.classList.add("error");
+                    setTimeout(() => {
+                        tarjeta.classList.remove("error");
+                    }, 500);
+                }
+
+            });
+        })
+
+        new Sortable(document.getElementById("banco"), {
+            group: { name: "semana", pull: "clone", put: false },
+            sort: false,
+            animation: 200,
+            handle: ".asa",
+            onEnd: (evt) => {
+                mostrarMensaje(evt);
+                actualizarHoras();
+            }
+        });
+
+        function mostrarMensaje(evt) {
+            if (evt.from !== evt.to) {
+                const actividad = evt.item.textContent.replace("⠿", "").trim();
+                if (evt.to.id === "papelera") {
+                    document.getElementById("mensaje").textContent = actividad + " se elimino de la semana";
+                } else {
+                    document.getElementById("mensaje").textContent = actividad + " quedo para el dia " + evt.to.id;
+                }
+            }
+        }
+
+        const dias = document.querySelectorAll(".dia");
+        function actualizarHoras() {
+            dias.forEach((dia) => {
+                let horas = 0;
+                for (const actividad of dia.children) {
+                horas += Number(actividad.dataset.horas);
+                }
+                const columna = dia.parentElement;
+                columna.querySelector(".total").textContent = `${horas} h`;
+                columna.classList.toggle("sobrecargado", horas > 4);
+            });
+        }
+        
+
+        actualizarHoras();
+
+        new Sortable(document.getElementById("papelera"), {
+            group: { name: "semana", pull: false, put: true },
+            onAdd: (evt) => {
+                evt.item.remove();
+                actualizarHoras();
+            }
+        });
+
+        document.querySelector(".tablero").addEventListener("dblclick", (evt) => {
+            const tarjeta = evt.target.closest(".dia li");
+            if (tarjeta) {
+                tarjeta.classList.toggle("hecha");
+            }
+        });
+
+        document.getElementById("nueva").addEventListener("submit", (evt) => {
+            evt.preventDefault();
+
+            const nombre = document.getElementById("nombre").value.trim();
+            const horas = document.getElementById("horas").value;
+            if (nombre === "") return;
+
+            const tarjeta = document.createElement("li");
+            tarjeta.dataset.horas = horas;
+            tarjeta.innerHTML = '<span class="asa">⠿</span>';
+            tarjeta.append(` ${nombre} (${horas} h)`);
+
+            document.getElementById("banco").appendChild(tarjeta);
+            evt.target.reset();
+        });
+
+
+    </script>
+</body>
+</html>
